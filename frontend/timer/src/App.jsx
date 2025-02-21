@@ -19,8 +19,14 @@ export default function App() {
   }, [isRunning, timeLeft]);
 
   const startTimer = () => {
-    setTimeLeft(minutes * 60 + seconds);
+    if (timeLeft === 0) {
+      setTimeLeft(minutes * 60 + seconds);
+    }
     setIsRunning(true);
+  };
+
+  const pauseTimer = () => {
+    setIsRunning(false);
   };
 
   const formatTime = (time) => {
@@ -33,16 +39,16 @@ export default function App() {
 
   return (
     <div
-      className="h-screen bg-cover bg-center flex flex-col items-center justify-center"
+      className="h-screen bg-cover bg-center flex flex-col items-center justify-center font-[Impostograph]"
       style={{ backgroundImage: "url('src/assets/bg.png')" }}
     >
       <div className="flex items-center space-x-3 mb-8">
-        <span className="text-6xl font-[Impostograph] text-white">{mins}</span>
-        <span className="text-6xl font-[Impostograph] text-white">:</span>
-        <span className="text-6xl font-[Impostograph] text-white">{secs}</span>
+        <span className="text-9xl font-extrabold text-white font-[Impostograph]">{mins}</span>
+        <span className="text-9xl font-extrabold text-white font-[Impostograph]">:</span>
+        <span className="text-9xl font-extrabold text-white font-[Impostograph]">{secs}</span>
       </div>
 
-      {!isRunning && (
+      {!isRunning && timeLeft === 0 && (
         <div className="flex gap-4">
           <input
             type="number"
@@ -60,11 +66,29 @@ export default function App() {
           />
           <button
             onClick={startTimer}
-            className="bg-red-500 hover:bg-red-600 text-white rounded p-2 transition"
+            className="bg-transparent border border-red-500 hover:bg-red-500 text-red-500 hover:text-white rounded p-2 transition font-bold"
           >
             Start
           </button>
         </div>
+      )}
+
+      {isRunning && (
+        <button
+          onClick={pauseTimer}
+          className="bg-transparent border border-yellow-500 hover:bg-yellow-500 text-yellow-500 hover:text-white rounded p-2 mt-4 transition font-extrabold"
+        >
+          Pause
+        </button>
+      )}
+
+      {!isRunning && timeLeft > 0 && (
+        <button
+          onClick={startTimer}
+          className="bg-transparent border border-green-500 hover:bg-green-500 text-green-500 hover:text-white rounded p-2 mt-4 transition font-extrabold"
+        >
+          Resume
+        </button>
       )}
     </div>
   );
